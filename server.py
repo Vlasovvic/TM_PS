@@ -2,7 +2,6 @@
 #
 #
 #
-# :: comment alpha 0.0.3 :: - Added modbus data decoder
 
 import struct
 import serial,time
@@ -22,7 +21,7 @@ from pymodbus.compat import iteritems
 
 # SYSTEM SEVER INFO
 SYSTEM_SERVER_NAME = "poll_server_PYModbus"
-SYSTEM_SERVER_VERSION = "alpha 0.0.3"
+SYSTEM_SERVER_VERSION = "beta 0.1.1"
 api_username = 'server' # default api value
 api_password = '0000' # default api value
 api_server = 'poll_server_PYModbus' # default api value

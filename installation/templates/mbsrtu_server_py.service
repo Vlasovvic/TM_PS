@@ -1,0 +1,22 @@
+[Unit]
+Description=Dummy py-modbus Server (@by Victor.V 'n' Svyatoslav.V)
+After=network.target
+After=systemd-user-sessions.service
+After=network-online.target
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+User=root
+Type=simple
+ExecStart=/opt/poll_server_py/sbin/control.sh start
+ExecStop=/opt/poll_server_py/sbin/control.sh stop
+# TimeoutSec=30
+# Restart=on-failure
+# RestartSec=30
+# StartLimitInterval=350
+# StartLimitBurst=10
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target
