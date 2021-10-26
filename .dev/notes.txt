@@ -1,0 +1,99 @@
+#---------------------------------------------------------------------------------------------
+#ser = serial.Serial(port='/dev/ttyUSB2')
+
+#while True:
+#    val = ser.read(b'\x01\x03\x00')
+#    print(val)
+
+#while True:
+#    ser.write(b'\x01\x03\x00')
+#    val = ser.read()
+#    print(val)
+
+#Slave Address = 1, RTU Function number = 3 = Read Holding Registers, Register Address = 0
+#--------------------------------------------------------------------------------------------
+
+#from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+
+#client = ModbusClient(method='rtu', port='COM4', baudrate=2400, timeout=1)
+
+#client.connect()
+#read=client.read_holding_registers(address = 222 ,count =10,unit=1)
+#//Address is register address e.g 30222,
+#//and count is number of registers to read,
+#//so it will read values of register 30222 to 30232
+#//unit is slave address, for 1 device leave it 1
+
+#data=read.registers[int(2)] #reading register [int(2)] or [int(64)]
+#print(data) #printing value read in above line
+#--------------------------------------------------------------------------------------------
+
+#temps = instrument.read_registers(30001, 4, 3) # address, count, function code (3 or 4)
+#https://pymodbus.readthedocs.io/en/latest/source/library/REPL.html
+
+
+#CREATE TABLE poll_server_data (TIMESTAMP time, VALUE text, QUAL text);
+
+#https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
+
+#--------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+            #----------------------------------------------------------------------------------------------- DEBUG DB
+            #
+            #
+            #
+            #
+            #
+            #
+            #
+            #
+            print("***************************[ DEBUG DB WRITER ]****************************")
+
+            try:
+
+                connection = psycopg2.connect(
+                    user = configuration[11],
+                    password = configuration[12],
+                    host = configuration[13],
+                    port = configuration[14],
+                    database = configuration[15]
+                )
+
+                res = 'test value'
+                qual = 'true'
+                server_time = timer_ts()
+
+                postgres_insert_query = """ INSERT INTO poll_server_data (TIMESTAMP, VALUE, QUAL) VALUES (%s,%s,%s)"""
+                record_to_insert = (server_time, res, qual)
+                cursor = connection.cursor()
+                cursor.execute(postgres_insert_query, record_to_insert)
+                connection.commit()
+                count = cursor.rowcount
+                print timer_ts(),"[SERVER MESSAGE] ",count,"record inserted successfully into poll_server_data table"
+                if connection:
+                    cursor.close()
+                    connection.close()
+                    print timer_ts(),"[SERVER MESSAGE]","PostgreSQL connection is closed"
+
+            except (Exception, psycopg2.Error) as error:
+                print timer_ts(),"[SERVER ERROR]","Failed to insert record into poll_server_data table", error
+
+            print("*************************************************************************")
+            #
+            #
+            #
+            #
+            #
+            #
+            #
+            #
+            #----------------------------------------------------------------------------------------------- DEBUG DB
